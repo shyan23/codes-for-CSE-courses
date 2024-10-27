@@ -1,0 +1,1 @@
+{"name":"Local: TestClass","url":"/home/shyan/2-2/DSA-II/Codebase_/TestClass.java","tests":[{"id":1730043491486,"input":"5 5\n1 2 \n2 3 \n3 4 \n4 5\n4 2","output":"0 1 1 1 0"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/shyan/2-2/DSA-II/Codebase_/TestClass.java","group":"local","local":true}

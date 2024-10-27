@@ -1,0 +1,1 @@
+{"name":"Local: Codechef","url":"/home/shyan/2-2/DSA-II/Codebase_/Codechef.java","tests":[{"id":1730012300061,"input":"2\n3 5 4\n1 3\n1 2\n2 1\n3 2\n2 2\n2 3\n1 5\n5 5\n1 2\n1 1 1\n1 1\n1 1","output":"2\n1\n3\n1\n1"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/shyan/2-2/DSA-II/Codebase_/Codechef.java","group":"local","local":true}
