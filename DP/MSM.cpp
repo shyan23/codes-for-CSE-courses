@@ -19,7 +19,7 @@ int MSN(v32 &v, int i, int j)
     for (int k = i; k < j; k++)
     {
 
-        int cost = MSN(v, i, k) + MSN(v, k + 1, j) + v[i - 1] * v[k] * v[j];
+        int cost = MSN(v, i, k) + MSN(v, k + 1, j) + v[i - 1] * v[k] * v[j]; // state + parameter
 
         ans = min(ans, cost);
     }

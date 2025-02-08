@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
-
 using namespace std;
-
+// ... (keeping your typedefs and defines)
 typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> p32;
@@ -36,34 +35,70 @@ double eps = 1e-12;
 
 int dp[100][100];
 
-int knapsack_util(v32 p, v32 w, int wt, int n)
-{
+// Recursive implementation with memoization
+int knapsack_util(vector<int>& p, vector<int>& w, int wt, int n) {
+    // Base case
+    if (n < 0 || wt == 0) 
+        return 0;
+        
+    // Return memoized result if exists
     if (dp[n][wt] != -1)
         return dp[n][wt];
-    if (wt == 0 || n == 0)
-        return 0;
-
-    int nt = knapsack_util(p, w, wt, n - 1);
-    if (wt - w[n] >= 0)
-        nt = max(knapsack_util(p, w, wt - w[n], n - 1) + p[n], nt);
-
-    return dp[n][wt] = nt;
+    
+    // Don't include current item
+    int not_taken = knapsack_util(p, w, wt, n - 1);
+    
+    // Include current item if possible
+    int taken = 0;
+    if (w[n] <= wt) {
+        taken = p[n] + knapsack_util(p, w, wt - w[n], n - 1);
+    }
+    
+    // Store and return maximum value
+    return dp[n][wt] = max(taken, not_taken);
 }
-int knapsack(v32 p, v32 w, int wt, int n)
-{
-    return knapsack_util(p, w, wt, n);
+
+// Iterative implementation with tabulation
+int knapsackTabulation(vector<int>& p, vector<int>& w, int wt, int n) {
+    vector<vector<int>> dp(n + 1, vector<int>(wt + 1, 0));
+    
+    // Fill dp table
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= wt; j++) {
+            // Don't include current item
+            dp[i][j] = dp[i-1][j];
+            
+            // Include current item if possible
+            if (w[i-1] <= j) {
+                dp[i][j] = max(dp[i][j], 
+                              dp[i-1][j - w[i-1]] + p[i-1]);
+            }
+        }
+    }
+    
+    return dp[n][wt];
 }
 
-int main()
-{
+int main() {
     fast_cin();
-    int wt, n;
+    
+    int n, wt;
     cin >> n >> wt;
-    v32 profit(n);
-    v32 weigth(n);
+    
+    vector<int> profit(n);
+    vector<int> weight(n);
+    
     memset(dp, -1, sizeof(dp));
-    forn(i, n) cin >> profit[i];
-    forn(j, n) cin >> weigth[j];
-
-    cout << knapsack(profit, weigth, wt, n - 1);
+    
+    // Input profits and weights
+    for(int i = 0; i < n; i++) 
+        cin >> profit[i];
+    for(int i = 0; i < n; i++) 
+        cin >> weight[i];
+    
+    // Calculate using both methods
+    cout << "Recursive result: " << knapsack_util(profit, weight, wt, n-1) << "\n";
+    cout << "Iterative result: " << knapsackTabulation(profit, weight, wt, n) << "\n";
+    
+    return 0;
 }

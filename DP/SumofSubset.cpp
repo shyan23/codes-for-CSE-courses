@@ -1,10 +1,40 @@
 #include <bits/stdc++.h>
+
 using namespace std;
 
 typedef long long ll;
+typedef long double ld;
+typedef pair<int, int> p32;
+typedef pair<ll, ll> p64;
+typedef pair<double, double> pdd;
+typedef vector<ll> v64;
 typedef vector<int> v32;
-ll dp[30][100];
+typedef vector<vector<int>> vv32;
+typedef vector<vector<ll>> vv64;
+typedef vector<vector<p64>> vvp64;
+typedef vector<p64> vp64;
+typedef vector<p32> vp32;
+ll MOD = 998244353;
+double eps = 1e-12;
+#define forn(i, e) for (ll i = 0; i < e; i++)
+#define forsn(i, s, e) for (ll i = s; i < e; i++)
+#define rforn(i, s) for (ll i = s; i >= 0; i--)
+#define rforsn(i, s, e) for (ll i = s; i >= e; i--)
+#define ln "\n"
+#define dbg(x) cout << #x << " = " << x << ln
+#define mp make_pair
+#define pb push_back
+#define fi first
+#define se second
+#define INF 2e18
+#define fast_cin()                    \
+    ios_base::sync_with_stdio(false); \
+    cin.tie(NULL);                    \
+    cout.tie(NULL)
+#define all(x) (x).begin(), (x).end()
+#define sz(x) ((ll)(x).size())
 
+int dp[100][100];
 bool solve(v32 &v, ll n, ll sum, ll i)
 {
     if (sum == 0)
@@ -18,7 +48,7 @@ bool solve(v32 &v, ll n, ll sum, ll i)
     bool isPossible = solve(v, n, sum, i + 1);
 
     if (sum - v[i] >= 0)
-        isPossible |= solve(v, n, sum - v[i], i + 1); // elements cannot be re-used
+        isPossible |= solve(v, n, sum - v[i], i + 1);
 
     return dp[i][sum] = isPossible;
 }
@@ -44,10 +74,40 @@ void backtrack(v32 &v, ll n, ll sum, ll i, vector<int> &subset)
     }
 }
 
+v32 solution;
+int subset(int sum, int total, int target, int start, v32 v)
+{
+    if (dp[sum][total] != -1)
+        return dp[sum][total];
+    if (sum == target)
+    {
+
+        for (int i = 0; i < solution.size(); i++)
+        {
+            if (solution[i] == 1)
+            {
+                cout << v[i] << " ";
+            }
+        }
+        cout << endl;
+        return 1;
+    }
+    if (total <= 0 || sum >= target)
+        return 0;
+    if (target <= 0 && sum != target)
+        return 0;
+
+    solution[start] = 0;
+    int nt = subset(sum, total - v[start], target, start + 1, v);
+    solution[start] = 1;
+    int taken = subset(sum + v[start], total - v[start], target, start + 1, v);
+
+    return dp[target][total] = nt + taken;
+}
+
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+    fast_cin();
 
     ll n, sum;
     cin >> n >> sum;
@@ -62,6 +122,7 @@ int main()
     if (possible)
     {
         cout << "Subset with sum " << sum << " exists.\n";
+
         vector<int> subset;
         backtrack(v, n, sum, 0, subset);
 
@@ -77,11 +138,23 @@ int main()
         cout << "No subset with sum " << sum << " exists.\n";
     }
 
-    for (int i = 0; i < n; i++)
+    solution.resize(n, 0);
+    memset(dp, -1, sizeof(dp));
+
+    cout << "\nAll subsets with sum " << sum << ":\n";
+    int totalSubsets = subset(0, accumulate(v.begin(), v.end(), 0), sum, 0, v);
+
+    cout << "Total subsets found: " << totalSubsets << endl;
+
+    cout << "\nDP Table:\n";
+    for (int i = 0; i <= n; i++)
     {
         for (int j = 0; j <= sum; j++)
         {
-            cout << dp[i][j] << " ";
+            if (dp[i][j] == -1)
+                cout << ". ";
+            else
+                cout << dp[i][j] << " ";
         }
         cout << endl;
     }

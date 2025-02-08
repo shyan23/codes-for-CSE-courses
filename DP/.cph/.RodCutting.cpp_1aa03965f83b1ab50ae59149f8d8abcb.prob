@@ -1,0 +1,1 @@
+{"name":"Local: RodCutting","url":"/home/shyan/Desktop/Code/codes-for-CSE-courses/DP/RodCutting.cpp","tests":[{"id":1737472332261,"input":"8 6\n1 5 8 9 10 17 17 20","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/shyan/Desktop/Code/codes-for-CSE-courses/DP/RodCutting.cpp","group":"local","local":true}
