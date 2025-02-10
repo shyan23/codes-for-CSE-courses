@@ -14,6 +14,9 @@ const int N = 1e3;
 
 
 bool bfs(int src, int sink, int parent[], int v, int rgraph[][N]) {
+    // parent tracing kortesi
+    // korle path bair korte parbo
+
     memset(parent, -1, sizeof(int) * v);
     bool visited[N] = {false};
     queue<int> q;
@@ -24,7 +27,8 @@ bool bfs(int src, int sink, int parent[], int v, int rgraph[][N]) {
     while (!q.empty()) {
         int curr = q.front();
         q.pop();
-
+        
+        // prottekta vertex dekhtesi
         for (int i = 0; i < v; i++) {
             if (!visited[i] && rgraph[curr][i] > 0) {
                 parent[i] = curr;
@@ -48,21 +52,32 @@ int maxflow(int src, int sink, int rgraph[][N], int v) {
     while (bfs(src, sink, parent, v, rgraph)) {
         int pathFlow = INF;
 
+        // prottekbar bfs hopefully ekta augmented path niye ashe
         
         for (int i = sink; i != src; i = parent[i]) {
             int x = parent[i];
-            pathFlow = min(pathFlow, rgraph[x][i]);
+
+            // path er modhher bottleneck er jonno  minimum            
+
+            pathFlow = min(pathFlow, rgraph[x][i]); 
+
         }
 
+        // specific path er minimum flow maxflow er sathe add hoy
+        maxFlow += pathFlow;
         
+
+        // updating the rgraph
+
         for (int i = sink; i != src; i = parent[i]) {
             int x = parent[i];
             rgraph[x][i] -= pathFlow;
             rgraph[i][x] += pathFlow;
         }
 
-        maxFlow += pathFlow;
+        
     }
+    // finally return kortesi
     return maxFlow;
 }
 
